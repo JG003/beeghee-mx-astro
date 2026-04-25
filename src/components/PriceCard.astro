@@ -1,0 +1,103 @@
+---
+import { MX_SITE, getPriceState, type PriceInfo } from '../data/site';
+import WhatsAppCTA from './WhatsAppCTA.astro';
+
+export interface Props {
+  product?: PriceInfo;
+  title?: string;
+  priceMXN?: number;
+  desc?: string;
+  badge?: string;
+  comingSoon?: boolean;
+  imageSrc?: string;
+  imageAlt?: string;
+  notifyTag?: string; // when comingSoon, render NotifyCTA (LeadForm island)
+}
+
+const {
+  product,
+  title: titleProp,
+  priceMXN: priceProp,
+  desc: descProp,
+  badge: badgeProp,
+  comingSoon: comingSoonProp = false,
+  imageSrc: imageSrcProp,
+  imageAlt: imageAltProp,
+  notifyTag,
+} = Astro.props;
+
+const title = product?.name ?? titleProp;
+const desc = product?.desc ?? descProp;
+const badge = product?.badge ?? badgeProp;
+const comingSoon = product?.comingSoon ?? comingSoonProp;
+const imageSrc = product?.imageSrc ?? imageSrcProp;
+const imageAlt = product?.imageAlt ?? imageAltProp ?? title;
+const supplyNote = product?.supplyNote;
+
+let finalPrice = priceProp;
+let showPromo = false;
+let normalPrice: number | undefined;
+let promoLabel: string | undefined;
+
+if (product) {
+  const s = getPriceState(product);
+  finalPrice = s.current;
+  showPromo = s.onSale;
+  normalPrice = s.normalPrice;
+  promoLabel = product.promoLabel;
+}
+
+const fmt = (n: number) => n.toLocaleString('es-MX');
+---
+<div class={`relative rounded-xl border border-border bg-card p-6 space-y-3 shadow-sm ${comingSoon ? 'opacity-85' : ''}`}>
+  {badge && (
+    <span class="absolute -top-3 right-4 text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full font-semibold">
+      {badge}
+    </span>
+  )}
+  {comingSoon && (
+    <span class="absolute -top-3 left-4 text-xs bg-neutral-800 text-white px-2 py-1 rounded-full">
+      Próximamente
+    </span>
+  )}
+
+  {imageSrc && (
+    <div class="flex justify-center mb-2">
+      <img src={imageSrc} alt={imageAlt} class="h-24 md:h-28 object-contain drop-shadow-md" loading="lazy" />
+    </div>
+  )}
+
+  <h3 class="text-lg font-semibold">{title}</h3>
+
+  {comingSoon ? (
+    <p class="text-sm font-medium text-muted-foreground">Precio por anunciar</p>
+  ) : (
+    <div class="space-y-1">
+      <div class="flex items-baseline gap-2 flex-wrap">
+        {showPromo && normalPrice && (
+          <span class="text-neutral-400 line-through text-lg font-medium">
+            ${fmt(normalPrice)} {MX_SITE.currency}
+          </span>
+        )}
+        <span class={`font-bold text-3xl ${showPromo ? 'text-primary' : 'text-foreground'}`}>
+          ${fmt(finalPrice!)} {MX_SITE.currency}
+        </span>
+      </div>
+      {showPromo && promoLabel && (
+        <p class="text-xs text-primary font-semibold bg-primary/10 inline-block px-2 py-1 rounded">
+          🎉 {promoLabel}
+        </p>
+      )}
+    </div>
+  )}
+
+  <p class="text-sm text-muted-foreground">{desc}</p>
+
+  {!comingSoon && supplyNote && (
+    <p class="text-xs text-muted-foreground">{supplyNote}</p>
+  )}
+
+  <div class="pt-2">
+    <slot />
+  </div>
+</div>

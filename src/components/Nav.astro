@@ -1,0 +1,40 @@
+---
+const { pathname } = Astro.url;
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/tienda', label: 'Tienda' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/contacto', label: 'Contacto' },
+];
+---
+<nav class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div class="container">
+    <div class="flex h-16 items-center justify-between">
+      <a href="/" class="flex items-center" aria-label="Beeghee México">
+        <img src="/beeghee-logo.png" alt="Beeghee México" class="h-10 md:h-12" />
+      </a>
+
+      <div class="hidden md:flex items-center space-x-6">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class={`text-foreground/80 hover:text-foreground transition-colors ${pathname === link.href ? 'text-foreground font-semibold' : ''}`}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <details class="md:hidden relative">
+        <summary class="list-none cursor-pointer p-2" aria-label="Menú">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </summary>
+        <div class="absolute right-0 top-12 w-56 rounded-xl border border-border bg-background shadow-lg p-4 space-y-3">
+          {links.map((link) => (
+            <a href={link.href} class="block text-foreground/80 hover:text-foreground transition-colors">{link.label}</a>
+          ))}
+        </div>
+      </details>
+    </div>
+  </div>
+</nav>

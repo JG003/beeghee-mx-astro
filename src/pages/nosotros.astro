@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const aboutLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'Nuestra Historia | Beeghee México',
+  url: 'https://mx.beeghee.energy/nosotros',
+  inLanguage: 'es-MX',
+  mainEntity: {
+    '@id': 'https://mx.beeghee.energy/#organization',
+  },
+};
+---
+<BaseLayout
+  title="Nosotros | Beeghee México — Nuestra Historia en Veracruz"
+  description="Del suelo volcánico de Veracruz al superalimento fermentado. Conoce la historia de Beeghee México y el proceso Fifth Ferment™."
+  structuredData={aboutLd}
+>
+  <section class="bg-hero-slate py-20">
+    <div class="container text-center text-white max-w-3xl">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Nuestra Historia</h1>
+      <p class="text-lg text-white/80">
+        Del suelo volcánico de Veracruz al superalimento fermentado que está
+        cambiando la forma en que nos alimentamos.
+      </p>
+    </div>
+  </section>
+
+  <section class="container py-16 max-w-4xl">
+    <div class="grid md:grid-cols-3 gap-10">
+      <div class="space-y-4 text-center">
+        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3 class="text-xl font-semibold">Veracruz, México</h3>
+        <p class="text-muted-foreground text-sm">
+          Nuestras colmenas están en una región de suelo volcánico y clima tropical ideal para la apicultura. Cada lote captura la firma floral única de su entorno — lo que llamamos <em>Florageprint™</em>.
+        </p>
+      </div>
+
+      <div class="space-y-4 text-center">
+        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19.2 2.96c1.4 9.3-3.6 15.7-8.2 17.04Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        </div>
+        <h3 class="text-xl font-semibold">Fermentación en Colmena</h3>
+        <p class="text-muted-foreground text-sm">
+          Beeghee es pan de abeja (<em>bee bread</em>) — polen fermentado dentro de la colmena mediante un proceso que las abejas han perfeccionado durante 100 millones de años. Nosotros lo llamamos <em>The Fifth Ferment™</em>.
+        </p>
+      </div>
+
+      <div class="space-y-4 text-center">
+        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3 class="text-xl font-semibold">Nuestra Misión</h3>
+        <p class="text-muted-foreground text-sm">
+          Hacer accesible el primer superalimento <em>hive-fermented™</em> del mundo: probióticos vivos, energía limpia y un microbioma feliz — directo de la colmena a tu mesa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream-accent py-14">
+    <div class="container text-center max-w-2xl">
+      <h2 class="text-2xl font-bold mb-3">Conoce la ciencia completa</h2>
+      <p class="text-muted-foreground mb-6">
+        La Quinta Fermentación, investigación, artículos educativos y más — todo en nuestro sitio principal.
+      </p>
+      <a
+        href="https://beeghee.co/about"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+      >
+        Visitar beeghee.co
+      </a>
+    </div>
+  </section>
+</BaseLayout>

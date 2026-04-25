@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WhatsAppCTA from '../components/WhatsAppCTA.astro';
+import PriceCard from '../components/PriceCard.astro';
+import LeadForm from '../components/islands/LeadForm.tsx';
+import { PRICING, COMING_SOON } from '../data/site';
+
+const faqs = [
+  { q: '¿El envío tiene costo?', a: 'El costo de envío varía según tu ubicación. Te lo confirmamos por WhatsApp antes de procesar tu pedido.' },
+  { q: '¿Puedo pagar contra entrega?', a: 'Por el momento solo aceptamos pago anticipado para garantizar la disponibilidad de tu producto.' },
+  { q: '¿Hacen factura?', a: 'Sí, podemos emitir factura. Solo solicítala al momento de hacer tu pedido.' },
+  { q: '¿Cómo se consume Beeghee?', a: 'Recomendamos tomar 1-2 cucharadas al día, preferentemente en ayunas o antes de hacer ejercicio. Puedes consumirlo directamente, mezclarlo con agua tibia, añadirlo a smoothies o untarlo en pan.' },
+  { q: '¿El producto necesita refrigeración?', a: 'Beeghee se conserva mejor en refrigeración después de abierto, aunque puede mantenerse a temperatura ambiente por períodos cortos. Sin abrir, tiene una vida útil de 6-12 meses en un lugar fresco y seco.' },
+  { q: '¿Tienen política de devoluciones?', a: 'Si recibes un producto dañado o en mal estado, contáctanos inmediatamente por WhatsApp con fotos. Te enviaremos un reemplazo sin costo adicional.' },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const jars = [PRICING.tangy, PRICING.velvet];
+const bundles = [PRICING.double, PRICING.family].filter((p) => !p.disabled);
+const travels = [PRICING['travel-tangy'], PRICING['travel-velvet']];
+---
+<BaseLayout
+  title="Tienda | Beeghee México — Pan de Abeja Fermentado"
+  description="Compra Beeghee en México — pan de abeja fermentado en colmena. Envío a toda la República. Paquetes individuales, doble y tamaños de viaje."
+  structuredData={faqLd}
+>
+  <section class="bg-hero-slate py-16">
+    <div class="container text-center text-white">
+      <span class="inline-block mb-4 bg-white/10 text-white border border-white/20 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+        Envío a toda la República
+      </span>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Tienda</h1>
+      <p class="text-xl text-white/80 max-w-2xl mx-auto">
+        Elige el formato perfecto para ti. Todos los pedidos se confirman por WhatsApp.
+      </p>
+    </div>
+  </section>
+
+  <section class="container py-12">
+    <div class="max-w-5xl mx-auto space-y-12">
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold">Frascos 9 oz</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {jars.map((product) => (
+            <PriceCard product={product}>
+              <WhatsAppCTA text={product.ctaText} />
+            </PriceCard>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold">Paquetes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {bundles.map((product) => (
+            <PriceCard product={product}>
+              <WhatsAppCTA text={product.ctaText} />
+            </PriceCard>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold">Tamaños de Viaje</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {travels.map((product) => (
+            <PriceCard product={product}>
+              <WhatsAppCTA text={product.ctaText} />
+            </PriceCard>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold">Próximamente</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {COMING_SOON.map((o) => (
+            <PriceCard
+              title={o.title}
+              desc={o.desc}
+              comingSoon
+              imageSrc={o.imageSrc}
+              imageAlt={o.imageAlt}
+            >
+              <div class="space-y-2">
+                <LeadForm client:visible tag={`notify:${o.key}`} placeholder="Tu correo" buttonText="Avísenme" />
+                <p class="text-xs text-muted-foreground">Te avisaremos en cuanto esté disponible.</p>
+              </div>
+            </PriceCard>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-cream-accent">
+    <div class="container max-w-4xl">
+      <h2 class="text-2xl md:text-3xl font-semibold text-center mb-2">Formas de Pago</h2>
+      <p class="text-sm text-muted-foreground text-center mb-8">
+        Elige la forma de pago que más te convenga. Todas las opciones se confirman por WhatsApp.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div class="flex items-start gap-3 rounded-2xl border border-secondary bg-white/80 px-4 py-4 shadow-sm">
+          <div class="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-secondary/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7 12 2"/></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold">Transferencia bancaria (SPEI)</h3>
+            <p class="text-xs text-muted-foreground">Te compartimos los datos de cuenta para hacer tu transferencia segura.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 rounded-2xl border border-secondary bg-white/80 px-4 py-4 shadow-sm">
+          <div class="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-secondary/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold">Efectivo / depósito bancario</h3>
+            <p class="text-xs text-muted-foreground">Puedes pagar en ventanilla o depósito en efectivo, confirmando tu pago por WhatsApp.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 rounded-2xl border border-secondary bg-white/80 px-4 py-4 shadow-sm">
+          <div class="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-secondary/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M11.385 5.85q.25-1.07 1.34-.81l.61.13-.4 1.64-.37-.1c-.25-.04-.38.02-.41.21l-.41 1.72 1.95.52q1.03.26.89 1.53l-.22.98q.72.47.44 1.56c-.28 1.08-.84 1.45-1.68 1.2l-.4 1.75-.97-.25.41-1.71-.78-.21-.41 1.72-.97-.25.4-1.73-1.95-.5.24-1.02l.65.17q.45.09.53-.27l.76-3.2q.11-.49-.32-.6l-.64-.18.25-.97l1.95.52.6-2.54z"/></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold">Bitcoin (BTC)</h3>
+            <p class="text-xs text-muted-foreground">Aceptamos pago directo en Bitcoin. Te enviamos la wallet y el monto exacto en satoshis.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 rounded-2xl border border-secondary bg-white/60 px-4 py-4 shadow-sm opacity-80">
+          <div class="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-neutral-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold">
+              Tarjeta de crédito/débito
+              <span class="ml-1 text-xs font-normal text-primary">(próximamente)</span>
+            </h3>
+            <p class="text-xs text-muted-foreground">Muy pronto podrás pagar con tarjeta directamente desde la página.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-6 text-[11px] text-center text-muted-foreground">
+        Después de elegir tu forma de pago, confirmamos tu pedido y envío por WhatsApp.
+      </p>
+    </div>
+  </section>
+
+  <section class="container py-12 max-w-4xl">
+    <div class="flex items-start gap-4">
+      <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Tiempos de Entrega</h2>
+        <ul class="space-y-2 text-muted-foreground text-sm">
+          <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span> CDMX y Área Metropolitana: 1-3 días hábiles</li>
+          <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span> Veracruz y estados cercanos: 2-4 días hábiles</li>
+          <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span> Resto de la República: 3-6 días hábiles</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-card border-t py-12">
+    <div class="container max-w-4xl">
+      <h2 class="text-2xl font-bold mb-6">Preguntas Frecuentes</h2>
+      <div class="space-y-3">
+        {faqs.map((faq) => (
+          <details class="border border-border rounded-lg px-6 py-4 bg-background group">
+            <summary class="font-semibold cursor-pointer list-none flex items-center justify-between">
+              <span>{faq.q}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <p class="mt-3 text-muted-foreground">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="mt-8 text-center">
+        <p class="text-muted-foreground mb-4">¿No encontraste tu respuesta?</p>
+        <WhatsAppCTA text="Hola! Tengo una pregunta sobre Beeghee." variant="large" buttonText="Preguntar por WhatsApp" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container py-12 max-w-5xl">
+    <div class="bg-accent/10 rounded-2xl p-8 text-center">
+      <h2 class="text-2xl font-bold mb-4">¿Tienes un código de descuento?</h2>
+      <p class="text-muted-foreground mb-6">
+        Menciona tu código cuando contactes por WhatsApp y te aplicaremos el descuento.
+      </p>
+      <WhatsAppCTA text="Hola! Tengo un código de descuento para Beeghee." variant="large" />
+    </div>
+  </section>
+</BaseLayout>
