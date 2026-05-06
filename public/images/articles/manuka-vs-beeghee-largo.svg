@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Hero placeholder — Miel de Manuka vs. Beeghee">
+  <defs>
+    <linearGradient id="bgL" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ECE6DF"/>
+      <stop offset="1" stop-color="#D9D0C2"/>
+    </linearGradient>
+    <linearGradient id="bgR" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C8762E"/>
+      <stop offset="1" stop-color="#7B5630"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="630" fill="url(#bgL)"/>
+  <rect x="600" width="600" height="630" fill="url(#bgR)"/>
+  <g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle">
+    <text x="300" y="280" font-size="48" font-weight="700" fill="#3F4F5A">Manuka</text>
+    <text x="300" y="330" font-size="20" fill="#6B6F77">grado clínico · estéril</text>
+    <text x="900" y="280" font-size="48" font-weight="700" fill="#FFF7E6">Beeghee</text>
+    <text x="900" y="330" font-size="20" fill="#FFE6BC">probiótico vivo · cotidiano</text>
+  </g>
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="540" font-size="14" fill="#3F4F5A" opacity="0.65">PLACEHOLDER — reemplazar con foto editorial 1200×630</text>
+    <text x="600" y="565" font-size="12" fill="#3F4F5A" opacity="0.55">public/images/articles/manuka-vs-beeghee-largo.{webp,avif,jpg}</text>
+  </g>
+</svg>

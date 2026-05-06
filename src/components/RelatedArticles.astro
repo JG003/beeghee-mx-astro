@@ -1,0 +1,48 @@
+---
+import type { ArticleEntry } from '../lib/articles';
+import { articleHref } from '../lib/articles';
+
+export interface Props {
+  articles: ArticleEntry[];
+  heading?: string;
+}
+
+const { articles, heading = 'Sigue leyendo' } = Astro.props;
+---
+{articles.length > 0 && (
+  <aside class="border-t border-border/60 bg-cream-accent/40">
+    <div class="container mx-auto px-4 py-12 md:py-16 max-w-5xl">
+      <h2 class="text-2xl md:text-3xl font-bold mb-8 text-foreground">{heading}</h2>
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {articles.map((a) => (
+          <li>
+            <a
+              href={articleHref(a)}
+              class="group block rounded-lg overflow-hidden border border-border/50 bg-card hover:shadow-sm transition-shadow"
+            >
+              <div class="aspect-[16/9] bg-muted overflow-hidden">
+                <img
+                  src={a.data.hero}
+                  alt={a.data.heroAlt}
+                  width="800"
+                  height="450"
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </div>
+              <div class="p-4">
+                <p class="text-xs uppercase tracking-wide text-primary mb-1">
+                  {a.data.section === 'aprende' ? 'Aprende' : 'Blog'}
+                </p>
+                <h3 class="font-semibold text-foreground leading-snug line-clamp-2">
+                  {a.data.title}
+                </h3>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </aside>
+)}

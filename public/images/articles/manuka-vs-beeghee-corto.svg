@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Hero placeholder — Manuka vs. Beeghee, hora dorada">
+  <defs>
+    <linearGradient id="meadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F2C16B"/>
+      <stop offset="0.55" stop-color="#D9933C"/>
+      <stop offset="1" stop-color="#7A4A1F"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.78" cy="0.28" r="0.55">
+      <stop offset="0" stop-color="#FFE7B0" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#FFE7B0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#meadow)"/>
+  <rect width="1200" height="630" fill="url(#sun)"/>
+  <g fill="#7A4A1F">
+    <rect x="0" y="430" width="1200" height="200"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle">
+    <text x="600" y="270" font-size="52" font-weight="700" fill="#FFF7E6">Manuka vs. Beeghee</text>
+    <text x="600" y="320" font-size="22" fill="#FFE6BC">misma familia · trabajos opuestos</text>
+  </g>
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="540" font-size="14" fill="#FFF7E6" opacity="0.75">PLACEHOLDER — reemplazar con foto rústica hora dorada 1200×630</text>
+    <text x="600" y="565" font-size="12" fill="#FFF7E6" opacity="0.6">public/images/articles/manuka-vs-beeghee-corto.{webp,avif,jpg}</text>
+  </g>
+</svg>

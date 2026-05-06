@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getSectionArticles } from '../../lib/articles';
+import { render } from 'astro:content';
+
+const articles = await getSectionArticles('blog');
+const cards = await Promise.all(
+  articles.map(async (a) => {
+    const { remarkPluginFrontmatter } = await render(a);
+    return { article: a, readingTimeMinutes: remarkPluginFrontmatter.readingTimeMinutes as number | undefined };
+  })
+);
+---
+<BaseLayout
+  title="Blog Beeghee México — Notas, Guías Cortas e Historias de la Colmena"
+  description="Notas y guías cortas sobre Beeghee, pan de abeja fermentado, salud digestiva y vida cotidiana — escritas para leer en cinco minutos o menos."
+  hreflangEn="https://www.beeghee.energy/blog/"
+>
+  <section class="bg-accent text-white">
+    <div class="container mx-auto px-4 py-16 md:py-20 max-w-3xl text-center">
+      <p class="text-xs md:text-sm uppercase tracking-[0.18em] text-white/70 mb-3">Blog</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Notas e historias</h1>
+      <p class="mt-4 text-base md:text-lg text-white/85">
+        Lecturas cortas, ideas frescas, y notas semanales del equipo Beeghee México.
+      </p>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
+    {cards.length === 0 ? (
+      <p class="text-center text-muted-foreground py-12">
+        Pronto compartiremos los primeros posts.
+      </p>
+    ) : (
+      <ul class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {cards.map(({ article, readingTimeMinutes }) => (
+          <li>
+            <ArticleCard article={article} readingTimeMinutes={readingTimeMinutes} />
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

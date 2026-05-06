@@ -1,0 +1,116 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+import SoftCTA from '../components/SoftCTA.astro';
+import type { ArticleEntry } from '../lib/articles';
+import { getRelatedArticles, formatSpanishDate } from '../lib/articles';
+
+export interface Props {
+  article: ArticleEntry;
+  readingTimeMinutes?: number;
+}
+
+const { article, readingTimeMinutes } = Astro.props;
+const variant = article.data.section;
+const sectionLabel = variant === 'aprende' ? 'Aprende' : 'Blog';
+const heroBg = variant === 'aprende' ? 'bg-hero-slate' : 'bg-accent';
+const SITE_ORIGIN = 'https://mx.beeghee.energy';
+const path = `/${article.data.section}/${article.data.slug}/`;
+const canonical = `${SITE_ORIGIN}${path}`;
+const ogImageAbs = article.data.ogImage.startsWith('http')
+  ? article.data.ogImage
+  : `${SITE_ORIGIN}${article.data.ogImage}`;
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: article.data.title,
+  description: article.data.metaDescription,
+  image: [ogImageAbs],
+  datePublished: article.data.publishedAt,
+  inLanguage: 'es-MX',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Beeghee México',
+    url: SITE_ORIGIN,
+    logo: { '@type': 'ImageObject', url: `${SITE_ORIGIN}/beeghee-logo.png` },
+  },
+  author: { '@type': 'Organization', name: 'Beeghee México', url: SITE_ORIGIN },
+};
+
+const related = await getRelatedArticles(article, 3);
+
+const proseBase =
+  'prose prose-slate md:prose-lg max-w-none prose-headings:font-bold prose-headings:text-foreground prose-a:text-primary prose-strong:text-foreground prose-blockquote:border-primary prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-md';
+const proseClasses =
+  variant === 'aprende'
+    ? `${proseBase} prose-blockquote:bg-cream-accent/40 prose-table:text-sm`
+    : `${proseBase} prose-blockquote:bg-muted/40`;
+---
+<BaseLayout
+  title={article.data.metaTitle}
+  description={article.data.metaDescription}
+  canonical={canonical}
+  ogImage={ogImageAbs}
+  ogImageAlt={article.data.heroAlt}
+  ogType="article"
+  hreflangEn={article.data.hreflangEn}
+  publishedTime={article.data.publishedAt}
+  structuredData={articleLd}
+  noOrgWebsiteLd={true}
+>
+  <header class={`${heroBg} text-white`}>
+    <div class="container mx-auto px-4 pt-12 pb-10 md:pt-20 md:pb-14 max-w-3xl">
+      <p class="text-xs md:text-sm uppercase tracking-[0.18em] text-white/70 mb-3">
+        {sectionLabel}
+      </p>
+      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+        {article.data.title}
+      </h1>
+      {article.data.subtitle && (
+        <p class="mt-4 text-base md:text-xl text-white/85 italic">
+          {article.data.subtitle}
+        </p>
+      )}
+      <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/75">
+        <span class="inline-flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <time datetime={article.data.publishedAt}>{formatSpanishDate(article.data.publishedAt)}</time>
+        </span>
+        {readingTimeMinutes !== undefined && (
+          <span class="inline-flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {readingTimeMinutes} min de lectura
+          </span>
+        )}
+      </div>
+    </div>
+  </header>
+
+  <figure class="bg-background">
+    <div class="container mx-auto px-4 max-w-4xl -mt-6 md:-mt-10">
+      <div class="aspect-[16/9] overflow-hidden rounded-xl shadow-md bg-muted">
+        <img
+          src={article.data.hero}
+          alt={article.data.heroAlt}
+          width="1600"
+          height="900"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  </figure>
+
+  <article class="container mx-auto px-4 py-10 md:py-14 max-w-3xl">
+    <div class={proseClasses}>
+      <slot />
+    </div>
+    <SoftCTA />
+  </article>
+
+  <RelatedArticles articles={related} />
+</BaseLayout>

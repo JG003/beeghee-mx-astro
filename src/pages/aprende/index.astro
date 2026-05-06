@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getSectionArticles } from '../../lib/articles';
+import { render } from 'astro:content';
+
+const articles = await getSectionArticles('aprende');
+const cards = await Promise.all(
+  articles.map(async (a) => {
+    const { remarkPluginFrontmatter } = await render(a);
+    return { article: a, readingTimeMinutes: remarkPluginFrontmatter.readingTimeMinutes as number | undefined };
+  })
+);
+---
+<BaseLayout
+  title="Aprende — Biblioteca Beeghee | Pan de Abeja, Fermentación y Microbiota"
+  description="Artículos largos sobre pan de abeja fermentado en colmena, microbiota intestinal, ciencia de la fermentación y cómo usar Beeghee como parte de una rutina diaria."
+  hreflangEn="https://www.beeghee.energy/learn/"
+>
+  <section class="bg-hero-slate text-white">
+    <div class="container mx-auto px-4 py-16 md:py-20 max-w-3xl text-center">
+      <p class="text-xs md:text-sm uppercase tracking-[0.18em] text-white/70 mb-3">Aprende</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">La biblioteca Beeghee</h1>
+      <p class="mt-4 text-base md:text-lg text-white/85">
+        Lecturas largas sobre fermentación en colmena, microbiota intestinal y la
+        ciencia detrás del pan de abeja vivo.
+      </p>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
+    {cards.length === 0 ? (
+      <p class="text-center text-muted-foreground py-12">
+        Pronto compartiremos los primeros artículos.
+      </p>
+    ) : (
+      <ul class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {cards.map(({ article, readingTimeMinutes }) => (
+          <li>
+            <ArticleCard article={article} readingTimeMinutes={readingTimeMinutes} />
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

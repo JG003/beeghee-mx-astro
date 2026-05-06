@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Beeghee MX Admin</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@sveltia/cms@0.158.0/dist/sveltia-cms.js"></script>
+    <script>
+      window.CMS.init({
+        config: {
+          backend: {
+            name: 'github',
+            repo: 'JG003/beeghee-mx-astro',
+            branch: 'main',
+            base_url: 'https://sveltia-cms-auth-mx.joshgalt.workers.dev',
+            auth_endpoint: 'auth',
+          },
+          media_folder: 'public/images/articles',
+          public_folder: '/images/articles',
+          site_url: 'https://mx.beeghee.energy',
+          locale: 'es',
+          collections: [
+            {
+              name: 'blog',
+              label: 'Blog',
+              label_singular: 'Artículo de Blog',
+              description:
+                'Artículos cortos para el blog. Espejo en español de beeghee.energy/blog.',
+              folder: 'src/content/blog',
+              create: true,
+              slug: '{{slug}}',
+              extension: 'md',
+              format: 'frontmatter',
+              editor: { preview: false },
+              fields: [
+                { label: 'Título', name: 'title', widget: 'string', required: true },
+                { label: 'Subtítulo', name: 'subtitle', widget: 'string', required: false },
+                {
+                  label: 'Slug',
+                  name: 'slug',
+                  widget: 'string',
+                  required: true,
+                  hint: 'Identificador URL, ej: manuka-vs-beeghee-en-1-minuto',
+                },
+                { label: 'Sección', name: 'section', widget: 'hidden', default: 'blog' },
+                {
+                  label: 'Fecha de publicación',
+                  name: 'publishedAt',
+                  widget: 'datetime',
+                  date_format: 'YYYY-MM-DD',
+                  time_format: false,
+                  format: 'YYYY-MM-DD',
+                  required: true,
+                },
+                { label: 'Extracto', name: 'excerpt', widget: 'text', required: true },
+                { label: 'Imagen destacada', name: 'hero', widget: 'image', required: true },
+                { label: 'Texto alternativo', name: 'heroAlt', widget: 'string', required: true },
+                { label: 'Meta título (SEO)', name: 'metaTitle', widget: 'string', required: true },
+                {
+                  label: 'Meta descripción (SEO)',
+                  name: 'metaDescription',
+                  widget: 'text',
+                  required: true,
+                },
+                { label: 'Imagen OG', name: 'ogImage', widget: 'image', required: true },
+                {
+                  label: 'Enlace al original en inglés',
+                  name: 'hreflangEn',
+                  widget: 'string',
+                  required: false,
+                  hint: 'URL en beeghee.energy',
+                },
+                {
+                  label: 'Etiquetas',
+                  name: 'tags',
+                  widget: 'list',
+                  required: false,
+                  field: { label: 'Etiqueta', name: 'tag', widget: 'string' },
+                },
+                {
+                  label: 'Artículos relacionados',
+                  name: 'relatedSlugs',
+                  widget: 'list',
+                  required: false,
+                  field: { label: 'Slug', name: 'slug', widget: 'string' },
+                },
+                { label: 'Contenido', name: 'body', widget: 'markdown', required: true },
+              ],
+            },
+            {
+              name: 'aprende',
+              label: 'Aprende',
+              label_singular: 'Artículo de Aprende',
+              description:
+                'Artículos largos de investigación científica para /aprende. Espejo en español de beeghee.energy/learn.',
+              folder: 'src/content/aprende',
+              create: true,
+              slug: '{{slug}}',
+              extension: 'md',
+              format: 'frontmatter',
+              editor: { preview: false },
+              fields: [
+                { label: 'Título', name: 'title', widget: 'string', required: true },
+                { label: 'Subtítulo', name: 'subtitle', widget: 'string', required: false },
+                {
+                  label: 'Slug',
+                  name: 'slug',
+                  widget: 'string',
+                  required: true,
+                  hint: 'Identificador URL, ej: manuka-vs-beeghee',
+                },
+                { label: 'Sección', name: 'section', widget: 'hidden', default: 'aprende' },
+                {
+                  label: 'Fecha de publicación',
+                  name: 'publishedAt',
+                  widget: 'datetime',
+                  date_format: 'YYYY-MM-DD',
+                  time_format: false,
+                  format: 'YYYY-MM-DD',
+                  required: true,
+                },
+                { label: 'Extracto', name: 'excerpt', widget: 'text', required: true },
+                { label: 'Imagen destacada', name: 'hero', widget: 'image', required: true },
+                { label: 'Texto alternativo', name: 'heroAlt', widget: 'string', required: true },
+                { label: 'Meta título (SEO)', name: 'metaTitle', widget: 'string', required: true },
+                {
+                  label: 'Meta descripción (SEO)',
+                  name: 'metaDescription',
+                  widget: 'text',
+                  required: true,
+                },
+                { label: 'Imagen OG', name: 'ogImage', widget: 'image', required: true },
+                {
+                  label: 'Enlace al original en inglés',
+                  name: 'hreflangEn',
+                  widget: 'string',
+                  required: false,
+                  hint: 'URL en beeghee.energy',
+                },
+                {
+                  label: 'Etiquetas',
+                  name: 'tags',
+                  widget: 'list',
+                  required: false,
+                  field: { label: 'Etiqueta', name: 'tag', widget: 'string' },
+                },
+                {
+                  label: 'Artículos relacionados',
+                  name: 'relatedSlugs',
+                  widget: 'list',
+                  required: false,
+                  field: { label: 'Slug', name: 'slug', widget: 'string' },
+                },
+                { label: 'Contenido', name: 'body', widget: 'markdown', required: true },
+              ],
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>
