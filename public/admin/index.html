@@ -7,11 +7,14 @@
     <title>Beeghee MX Admin</title>
   </head>
   <body>
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
     <script src="https://unpkg.com/@sveltia/cms@0.158.0/dist/sveltia-cms.js"></script>
     <script>
       window.CMS.init({
-        load_config_file: false,
         config: {
+          load_config_file: false,
           backend: {
             name: 'github',
             repo: 'JG003/beeghee-mx-astro',
