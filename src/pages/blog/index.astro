@@ -18,7 +18,7 @@ const cards = await Promise.all(
   hreflangEn="https://www.beeghee.energy/blog/"
 >
   <section class="bg-accent text-white">
-    <div class="container mx-auto px-4 py-16 md:py-20 max-w-3xl text-center">
+    <div class="container py-16 md:py-20 max-w-3xl text-center">
       <p class="text-xs md:text-sm uppercase tracking-[0.18em] text-white/70 mb-3">Blog</p>
       <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Notas e historias</h1>
       <p class="mt-4 text-base md:text-lg text-white/85">
@@ -27,7 +27,7 @@ const cards = await Promise.all(
     </div>
   </section>
 
-  <section class="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
+  <section class="container py-12 md:py-16">
     {cards.length === 0 ? (
       <p class="text-center text-muted-foreground py-12">
         Pronto compartiremos los primeros posts.

@@ -61,7 +61,7 @@ const proseClasses =
   noOrgWebsiteLd={true}
 >
   <header class={`${heroBg} text-white`}>
-    <div class="container mx-auto px-4 pt-12 pb-10 md:pt-20 md:pb-14 max-w-3xl">
+    <div class="container pt-12 pb-10 md:pt-20 md:pb-14 max-w-3xl">
       <p class="text-xs md:text-sm uppercase tracking-[0.18em] text-white/70 mb-3">
         {sectionLabel}
       </p>
@@ -89,7 +89,7 @@ const proseClasses =
   </header>
 
   <figure class="bg-background">
-    <div class="container mx-auto px-4 max-w-4xl -mt-6 md:-mt-10">
+    <div class="container max-w-4xl -mt-6 md:-mt-10">
       <div class="aspect-[16/9] overflow-hidden rounded-xl shadow-md bg-muted">
         <img
           src={article.data.hero}
@@ -105,7 +105,7 @@ const proseClasses =
     </div>
   </figure>
 
-  <article class="container mx-auto px-4 py-10 md:py-14 max-w-3xl">
+  <article class="container py-10 md:py-14 max-w-3xl">
     <div class={proseClasses}>
       <slot />
     </div>
