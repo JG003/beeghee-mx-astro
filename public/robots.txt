@@ -60,7 +60,7 @@ Allow: /
 
 Crawl-delay: 1
 
-Sitemap: https://mx.beeghee.energy/sitemap.xml
+Sitemap: https://mx.beeghee.energy/sitemap-index.xml
 
 # LLM content
 # llms.txt: https://mx.beeghee.energy/llms.txt
