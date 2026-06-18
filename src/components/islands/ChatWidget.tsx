@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { useConversation } from '@elevenlabs/react';
+import { addItemByKey, openCart } from '../../lib/cart';
+import { PRICING, getPriceState, AGENT_SLUG_TO_KEY } from '../../data/site';
+
+// Real, purchasable catalog handed to the text chatbot (kept in sync with the
+// store so the assistant quotes correct names + MXN prices). Chocolates are
+// intentionally excluded — they're "Próximamente", not buyable yet.
+const CHAT_PRODUCTS = (['tangy', 'velvet', 'double', 'travel-tangy', 'travel-velvet'] as const).map(
+  (k) => ({ slug: k, name: PRICING[k].name, price: getPriceState(PRICING[k]).current, currency: 'MXN' })
+);
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL ?? 'https://nqskllzyphlhmuhzpcdy.supabase.co';
 const SUPABASE_ANON = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xc2tsbHp5cGhsaG11aHpwY2R5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNDIyMjEsImV4cCI6MjA3ODcxODIyMX0.3Th9Bu441NwQT5C0-Ye9YPW7YnCtY7DGkUdT_iCd_4M';
-const WA_DIGITS = '529818198199';
+// Includes the legacy Mexican mobile "1" — WhatsApp registered the account under
+// +52 1 981...; without it the chat won't open. See src/data/site.ts.
+const WA_DIGITS = '5219818198199';
 const WELCOME =
   '¡Hola! 🐝 Soy la asistente de Beeghee México. Puedo ayudarte con información sobre el pan de abeja, nuestros productos, o cómo hacer tu pedido. ¿En qué te puedo ayudar?';
 
@@ -41,13 +52,20 @@ function triggerAction(action: string) {
   } else if (action.startsWith('navigate:')) {
     const path = action.slice('navigate:'.length);
     window.location.href = path;
-  } else if (action.startsWith('add_to_cart:')) {
-    window.location.href = '/tienda';
+  } else if (action.startsWith('add_to_cart')) {
+    const slug = action.includes(':') ? action.slice(action.indexOf(':') + 1) : '';
+    const key = slug ? AGENT_SLUG_TO_KEY[slug] ?? null : null;
+    if (key) {
+      addItemByKey(key); // adds the SKU and opens the cart drawer
+    } else {
+      // Unknown / coming-soon product — let the shopper pick on the store page.
+      window.location.href = '/tienda';
+    }
   }
 }
 
 const actionLabels: Record<string, string> = {
-  add_to_cart: 'Ver en Tienda 🛒',
+  add_to_cart: 'Agregar al carrito 🛒',
   contact: 'Contactar Soporte 📧',
   whatsapp: 'Abrir WhatsApp 📱',
   navigate: 'Ir',
@@ -113,9 +131,23 @@ function VoicePanel() {
 
   const conversation = useConversation({
     clientTools: {
-      agregar_al_carrito: () => {
-        if (typeof window !== 'undefined') window.location.href = '/tienda';
-        return 'Producto agregado al carrito';
+      agregar_al_carrito: (params: { slug?: string; quantity?: number } = {}) => {
+        const { slug, quantity } = params;
+        const key = slug ? AGENT_SLUG_TO_KEY[slug] ?? null : null;
+        if (!key) {
+          // Coming-soon / unknown product (e.g. the chocolates). Be honest
+          // instead of claiming it was added.
+          return 'Ese producto todavía no está disponible para compra en línea. ¿Quieres que te avise cuando esté listo, o te muestro las opciones disponibles?';
+        }
+        const qty = quantity && quantity > 0 ? Math.floor(quantity) : 1;
+        const name = addItemByKey(key, qty);
+        return name
+          ? `Listo, agregué ${qty}× ${name} a tu carrito. Puedes pagar por WhatsApp o con tarjeta desde el carrito.`
+          : 'No pude agregar ese producto. Te muestro la tienda para completar tu pedido.';
+      },
+      abrir_carrito: () => {
+        openCart();
+        return 'Abrí tu carrito.';
       },
       abrir_contacto: () => {
         if (typeof window !== 'undefined') window.location.href = '/contacto';
@@ -254,11 +286,7 @@ export default function ChatWidget() {
           },
           body: JSON.stringify({
             messages: history.map((m) => ({ role: m.role, content: m.content })),
-            products: [
-              { slug: 'beeghee-bee-bread', name: 'Beeghee Pan de Abeja', price: 'varies', currency: 'MXN' },
-              { slug: 'chocolate-bars-6', name: 'Barras de Chocolate Orgánico (6)', price: 'varies', currency: 'MXN' },
-              { slug: 'chocolate-bites-12', name: 'Bocaditos de Chocolate Orgánico (12)', price: 'varies', currency: 'MXN' },
-            ],
+            products: CHAT_PRODUCTS,
           }),
           signal: controller.signal,
         });

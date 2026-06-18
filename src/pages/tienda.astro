@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import WhatsAppCTA from '../components/WhatsAppCTA.astro';
 import PriceCard from '../components/PriceCard.astro';
 import LeadForm from '../components/islands/LeadForm.tsx';
+import AddToCartButton from '../components/islands/AddToCartButton.tsx';
 import { PRICING, COMING_SOON } from '../data/site';
 
 const faqs = [
@@ -52,7 +53,10 @@ const travels = [PRICING['travel-tangy'], PRICING['travel-velvet']];
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {jars.map((product) => (
             <PriceCard product={product}>
-              <WhatsAppCTA text={product.ctaText} />
+              <div class="space-y-2">
+                <AddToCartButton client:load productKey={product.key} />
+                <WhatsAppCTA text={product.ctaText} class="w-full justify-center" />
+              </div>
             </PriceCard>
           ))}
         </div>
@@ -63,7 +67,10 @@ const travels = [PRICING['travel-tangy'], PRICING['travel-velvet']];
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {bundles.map((product) => (
             <PriceCard product={product}>
-              <WhatsAppCTA text={product.ctaText} />
+              <div class="space-y-2">
+                <AddToCartButton client:load productKey={product.key} />
+                <WhatsAppCTA text={product.ctaText} class="w-full justify-center" />
+              </div>
             </PriceCard>
           ))}
         </div>
@@ -74,7 +81,10 @@ const travels = [PRICING['travel-tangy'], PRICING['travel-velvet']];
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {travels.map((product) => (
             <PriceCard product={product}>
-              <WhatsAppCTA text={product.ctaText} />
+              <div class="space-y-2">
+                <AddToCartButton client:load productKey={product.key} />
+                <WhatsAppCTA text={product.ctaText} class="w-full justify-center" />
+              </div>
             </PriceCard>
           ))}
         </div>

@@ -3,7 +3,9 @@ import LeadForm from './LeadForm';
 
 const STORAGE_KEY = 'newVisitorOfferSeen';
 const EXPIRATION_DAYS = 15;
-const WA_DIGITS = '529818198199';
+// Includes the legacy Mexican mobile "1" — WhatsApp registered the account under
+// +52 1 981...; without it the chat won't open. See src/data/site.ts.
+const WA_DIGITS = '5219818198199';
 
 const OFFERS = {
   tangy: {
